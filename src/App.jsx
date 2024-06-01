@@ -10,6 +10,7 @@ import {
     faCheckCircle,
     faTimesCircle,
     faCoffee,
+    faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 
 const PageContainer = styled.div`
@@ -36,7 +37,7 @@ const ImageTop = styled.div`
 
 const Title = styled.div`
     width: 100%;
-    text-align: start;
+    text-align: center;
     color: white;
     padding: 1em;
     margin-bottom: 20px;
@@ -158,6 +159,7 @@ function App() {
     const [file, setFile] = useState(null);
     const [fileStatus, setFileStatus] = useState(null);
     const [responseData, setResponseData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -172,13 +174,15 @@ function App() {
 
     const handleFileClear = () => {
         setResponseData(null);
-        setFileStatus("error")
     };
+
+    console.log(file);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append("file", file);
+        setLoading(true);
 
         try {
             const response = await axios.post(
@@ -193,6 +197,8 @@ function App() {
             setResponseData(response.data);
         } catch (error) {
             console.error("Error uploading file:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -227,8 +233,17 @@ function App() {
                             </FileLabel>
                         </ContainerInput>
                         <Form onSubmit={handleSubmit}>
-                            <Button type="submit">
-                                Clique para apresentar os dados
+                            <Button
+                                type="submit"
+                                disabled={loading || !!responseData}
+                            >
+                                {loading ? (
+                                    <FontAwesomeIcon icon={faSpinner} spin />
+                                ) : responseData ? (
+                                    "Dados apresentados"
+                                ) : (
+                                    "Clique para apresentar os dados"
+                                )}
                             </Button>
                         </Form>
                         {responseData && <DataDisplay data={responseData} />}

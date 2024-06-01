@@ -37,12 +37,13 @@ const DataDisplay = ({ data }) => {
 
     const totalByState = data.totalByState.byState;
     const averageIMC = data.averageIMC.average;
-    const obesePercentageList = data.obesePercentageList;
+    const obesePercentageList = data.obesePercentageList.sort((a, b) => a.gender.localeCompare(b.gender));
     const averageByAge = data.averageByAge.averageByAge;
     const receivers = data.receivers.receivers;
 
     const stateArray = Object.entries(totalByState);
-    const bloodTypeArray = Object.entries(averageByAge);
+    const bloodTypeAverage = Object.entries(averageByAge);
+    const bloodTypeReceivers = Object.entries(receivers);
 
     stateArray.sort((a, b) => {
       const stateNameA = StateNames[a[0]] || a[0];
@@ -50,7 +51,9 @@ const DataDisplay = ({ data }) => {
       return stateNameA.localeCompare(stateNameB);
     });
 
-    bloodTypeArray.sort((a, b) => a[0].localeCompare(b[0]));
+    bloodTypeAverage.sort((a, b) => a[0].localeCompare(b[0]));
+    bloodTypeReceivers.sort((a, b) => a[0].localeCompare(b[0]));
+
 
     return (
         <div>
@@ -122,7 +125,7 @@ const DataDisplay = ({ data }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {bloodTypeArray.map(([bloodType, age]) => (
+                    {bloodTypeAverage.map(([bloodType, age]) => (
                         <tr key={bloodType}>
                             <Td>Tipo {bloodType}</Td>
                             <Td>{formatNumber(age)} de média</Td>
@@ -143,7 +146,7 @@ const DataDisplay = ({ data }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {bloodTypeArray.map(([bloodType, total]) => (
+                    {bloodTypeReceivers.map(([bloodType, total]) => (
                         <tr key={bloodType}>
                             <Td>Tipo {bloodType}</Td>
                             <Td>{total} receptores</Td>
