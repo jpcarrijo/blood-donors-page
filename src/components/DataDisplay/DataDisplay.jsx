@@ -1,32 +1,7 @@
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import { Table, Th, Td, Title } from "./styles";
 import { StateNames } from "../States/StatesMapping";
 
-const Table = styled.table`
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 1em;
-`;
-
-const Th = styled.th`
-    background: var(--linear);
-    color: #333;
-    padding: 10px;
-    border: 1px solid #cc6600;
-`;
-
-const Td = styled.td`
-    padding: 10px;
-    border: 1px solid #cc6600;
-`;
-
-const Title = styled.h2`
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
-    margin-top: 20px;
-`;
 
 function formatNumber(number) {
     return parseFloat(number).toFixed(1).replace(".", ",");
@@ -37,7 +12,9 @@ const DataDisplay = ({ data }) => {
 
     const totalByState = data.totalByState.byState;
     const averageIMC = data.averageIMC.average;
-    const obesePercentageList = data.obesePercentageList.sort((a, b) => a.gender.localeCompare(b.gender));
+    const obesePercentageList = data.obesePercentageList.sort((a, b) =>
+        a.gender.localeCompare(b.gender)
+    );
     const averageByAge = data.averageByAge.averageByAge;
     const receivers = data.receivers.receivers;
 
@@ -46,14 +23,13 @@ const DataDisplay = ({ data }) => {
     const bloodTypeReceivers = Object.entries(receivers);
 
     stateArray.sort((a, b) => {
-      const stateNameA = StateNames[a[0]] || a[0];
-      const stateNameB = StateNames[b[0]] || b[0];
-      return stateNameA.localeCompare(stateNameB);
+        const stateNameA = StateNames[a[0]] || a[0];
+        const stateNameB = StateNames[b[0]] || b[0];
+        return stateNameA.localeCompare(stateNameB);
     });
 
     bloodTypeAverage.sort((a, b) => a[0].localeCompare(b[0]));
     bloodTypeReceivers.sort((a, b) => a[0].localeCompare(b[0]));
-
 
     return (
         <div>
